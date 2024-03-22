@@ -4,28 +4,30 @@ class CollisionHandler {
   var width
   var height
 
+  var x
+  var y
+
   def CollisionHandler(offsetX, offsetY, width, height) {
     this.offsetX = offsetX
     this.offsetY = offsetX
     this.width = width
     this.height = height
+
+    this.x = 0.0f
+    this.y = 0.0f
   }
 
-  // def getX() {
-  //   return this.parent.x + offsetX
-  // }
+  def setPosition(x, y) {
+    this.x = x + this.offsetX
+    this.y = y + this.offsetY
+  }
 
-  // def getY() {
-  //   return this.parent.y + offsetY
-  // }
+  def isOverlapingWith(collisionObject) {
+    var condition1 = this.x < (collisionObject.x + collisionObject.width)
+    var condition2 = (this.x + this.width) > collisionObject.x
+    var condition3 = this.y < (collisionObject.y + collisionObject.height)
+    var condition4 = (this.y + this.height) > collisionObject.y
 
-  // def isOverlapingWith(collisionObject) {
-  //   return (
-  //     (this.getX() < (collisionObject.getX() + collisionObject.width)) &&
-  //     ((this.getX() + this.width) > collisionObject.getX()) &&
-  //     ((this.getY() < collisionObject.getY()) + collisionObject.height) &&
-  //     ((this.getY() + this.height) > collisionObject.getY())
-  //   )
-  // }
-
+    return condition1 && condition2 && condition3 && condition4
+  }
 }

@@ -29,6 +29,9 @@ class Map1 {
   def update(dt) {
     this.player1.update(dt)
     this.player2.update(dt)
+
+    // TODO: somehow figure out how to handle collisions
+    var overlap = this.player1.collisionHandler.isOverlapingWith(this.player2.collisionHandler)
   }
 
   def draw() {

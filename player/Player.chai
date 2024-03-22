@@ -101,7 +101,9 @@ class Player {
       this.animationTickCounter = 0.0f
     }
 
-    // Movement
+    // Update position
+    var oldX = this.x
+    var oldY = this.y
     if (this.getActiveDirection() != "") {
       var distance = 160.0f * dt
       switch (this.getActiveDirection()) {
@@ -122,6 +124,22 @@ class Player {
           break;
         }
       }
+    }
+
+    // Update collision box
+    this.collisionHandler.setPosition(this.x, this.y)
+
+    // Check if position is valid
+    // check within map
+    var preventMovementX = this.collisionHandler.x < 0.0f || (this.collisionHandler.x + this.collisionHandler.width) > 800.0f
+    var preventMovementY = this.collisionHandler.y < 0.0f || (this.collisionHandler.y + this.collisionHandler.height) > 515.0f
+
+    if (preventMovementX) {
+      this.x = oldX
+    }
+
+    if (preventMovementY) {
+      this.y = oldY
     }
   }
 

@@ -1,0 +1,124 @@
+class Player {
+  var sprites
+  var x
+  var y
+
+  var frame
+  var playerIndex
+
+  var animationTickCounter
+
+  var animationTick
+  var animationLenght
+  var animationName
+  
+  def Player(index) {
+    this.sprites = [
+      "right_run": [
+        love.graphics.newImage("player/assets/right/0-0.png"),
+        love.graphics.newImage("player/assets/right/0-1.png"),
+        love.graphics.newImage("player/assets/right/0-2.png"),
+        love.graphics.newImage("player/assets/right/0-3.png"),
+        love.graphics.newImage("player/assets/right/0-4.png"),
+        love.graphics.newImage("player/assets/right/0-5.png"),
+        love.graphics.newImage("player/assets/right/0-6.png"),
+        love.graphics.newImage("player/assets/right/0-7.png")
+      ],
+      "right_static": [
+        love.graphics.newImage("player/assets/right/static.png")
+      ]
+    ]
+
+    this.animations = [
+      "right_static": [
+        ""
+      ]
+    ]
+
+    this.playerIndex = index
+    
+    this.x = 0.0f
+    this.y = 0.0f
+    
+    this.frame = 0
+    this.animationTickCounter = 0.0f
+    this.animationTick = -1.0f
+    this.animationLenght = 1
+    // TODO: Dependent on this.getDirection()
+    this.animationName = "right_static"
+  }
+
+  def getActiveDirection() {
+    if (this.playerIndex == 1) {
+      return p1ActiveDirection
+    } else {
+      return p2ActiveDirection
+    }
+  }
+
+  def getDirection() {
+    if (this.playerIndex == 1) {
+      return p1Direction
+    } else {
+      return p2Direction
+    }
+  }
+
+  def update(dt) {
+    // Select appropriate animation
+    if (this.getDirection() == "right") {
+      if (this.getActiveDirection() == "") {
+        this.animationName = "right_static"
+        this.animationTick = -1.0f
+        this.animationLenght = 1
+        this.frame = 0
+      } else {
+        this.animationName = "right_run"
+        this.animationLenght = 8
+        if (this.animationTick == -1.0f) {
+          this.frame = 0
+        }
+        this.animationTick = 0.045f
+      }
+    }
+
+    // Handle animation tick
+    if (this.animationTickCounter < this.animationTick) {
+      this.animationTickCounter += dt
+    } else {
+      this.frame += 1
+      if (this.frame >= this.animationLenght) {
+        this.frame = 0
+      }
+      this.animationTickCounter = 0.0f
+    }
+
+    // Movement
+    if (this.getActiveDirection() != "") {
+      var distance = 160.0f * dt
+      print(dt)
+      switch (this.getActiveDirection()) {
+        case("right") {
+          this.x += distance
+          break;
+        }
+        case("left") {
+          this.x -= distance
+          break;
+        }
+        case("down") {
+          this.y += distance
+          break;
+        }
+        case("up") {
+          this.y -= distance
+          break;
+        }
+      }
+    }
+  }
+
+  def draw() {
+    love.graphics.draw(this.sprites[this.animationName][this.frame], this.x, this.y)
+  }
+}

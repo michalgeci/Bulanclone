@@ -1,0 +1,125 @@
+// Global direction
+global p1ActiveDirection = ""
+global p2ActiveDirection = ""
+global p1Direction = "down" // TODO: Make it random
+global p2Direction = "down" // TODO: Make it random
+
+// Active objects
+global activeObjects = Vector()
+global defaultFont
+
+def conf(t) {
+  t.version = "0.0.1"       // Version of ChaiLove
+  t.identity = "bulanclone"  // Machine name of your game
+  t.window.title = "Bulanci (clone)" // Human-readable name
+  t.window.width = 800       // Game width
+  t.window.height = 600      // Game height
+  t.console = true //false          // Developer console, toggle with tilde
+}
+
+def onStartGame() {
+  activeObjects.clear()
+  activeObjects.push_back(LoadingScreen(afterLoadScreen))
+}
+
+def afterLoadScreen() {
+  activeObjects.clear()
+  activeObjects.push_back(Map1())
+}
+
+def load() {
+  // Import Used Classes
+  love.filesystem.load("loading_screen/LoadingScreen.chai")
+  love.filesystem.load("intro_screen/IntroScreen.chai")
+  love.filesystem.load("map1/Map1.chai")
+
+  defaultFont = love.graphics.newFont("fonts/8bit-Regular.ttf", 32)
+
+  activeObjects.push_back(IntroScreen(onStartGame))
+}
+
+def update(dt) {
+  for (object:activeObjects) {
+    object.update(dt)
+  }
+}
+
+def draw() {
+  for (object:activeObjects) {
+    object.draw()
+  }
+
+  love.graphics.setFont(defaultFont)
+  love.graphics.print(p1ActiveDirection, 16, 16)
+}
+
+
+def joystickpressed(joy, button) {
+  // up
+  // down
+  // left
+  // right
+  // b
+  // a
+  // x
+  // y
+  // r1
+  // r2
+  // l1
+  // l2
+  // start
+  // select
+
+  if (button == "select") {
+    love.event.quit()
+  }
+
+  if (button == "up" || button == "down" || button == "left" || button == "right") {
+    p1ActiveDirection = button
+    p1Direction = button
+  }
+
+  if (button == "x") {
+    p2ActiveDirection = "up"
+    p2Direction = "up"
+  }
+
+  if (button == "y") {
+    p2ActiveDirection = "left"
+    p2Direction = "left"
+  }
+
+  if (button == "a") {
+    p2ActiveDirection = "right"
+    p2Direction = "right"
+  }
+
+  if (button == "b") {
+    p2ActiveDirection = "down"
+    p2Direction = "down"
+  }
+}
+
+def joystickreleased(joy, button) {
+  if (button == "up" || button == "down" || button == "left" || button == "right") {
+    if (p1ActiveDirection == button) {
+      p1ActiveDirection = ""
+    }
+  }
+
+  if (button == "x" && p2ActiveDirection == "up") {
+    p2ActiveDirection = ""
+  }
+
+  if (button == "y" && p2ActiveDirection == "left") {
+    p2ActiveDirection = ""
+  }
+
+  if (button == "a" && p2ActiveDirection == "right") {
+    p2ActiveDirection = ""
+  }
+
+  if (button == "b" && p2ActiveDirection == "down") {
+    p2ActiveDirection = ""
+  }
+}

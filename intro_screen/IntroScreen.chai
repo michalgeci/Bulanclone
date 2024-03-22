@@ -1,0 +1,20 @@
+class IntroScreen {
+  var bigFont
+
+  def IntroScreen(onStartGame) {
+    this.bigFont = love.graphics.newFont("fonts/8bit-Regular.ttf", 48)
+  }
+
+  def draw() {
+    love.graphics.setFont(this.bigFont)
+    love.graphics.print("PRESS START TO PLAY", 150, 276)
+  }
+
+  def update(dt) {
+    if(love.joystick.getJoystickCount() > 0) {
+      if (love.joystick.isDown(0, "start")) {
+        onStartGame()
+      }
+    }
+  }
+}

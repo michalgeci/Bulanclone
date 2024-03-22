@@ -1,0 +1,40 @@
+class Map1 {
+
+  var background
+  var music
+
+  var mushroom
+  var small_bush
+
+  var player1
+  var player2
+
+  def Map1() {
+    love.filesystem.load("player/Player.chai")
+
+    this.background = love.graphics.newImage("map1/background.png")
+
+    this.mushroom = love.graphics.newImage("map1/mushroom.png")
+    this.small_bush = love.graphics.newImage("map1/small_bush.png")
+
+    this.music = love.sound.newSoundData("map1/bedtime_story.ogg")
+    this.music.setLooping(true)
+    love.audio.play(this.music)
+
+    this.player1 = Player(1)
+    this.player2 = Player(2)
+  }
+
+  def update(dt) {
+    this.player1.update(dt)
+    this.player2.update(dt)
+  }
+
+  def draw() {
+    love.graphics.draw(this.background, 0, 0)
+    love.graphics.draw(this.small_bush, 200, 200)
+    this.player1.draw()
+    this.player2.draw()
+    love.graphics.draw(this.mushroom, 350, 100)
+  }
+}

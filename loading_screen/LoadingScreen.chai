@@ -1,0 +1,53 @@
+class LoadingScreen {
+
+  var backgroundImage
+
+  var circleEmpty
+  var circleGreen
+  var circleRed
+
+  var beepShort
+  var beepLong
+
+  var elapsedTime
+  var nextTick
+  
+  def LoadingScreen(afterLoadScreen) {
+    this.elapsedTime = 0.0f
+    this.nextTick = 1.0f
+
+    this.backgroundImage = love.graphics.newImage("loading_screen/loading.png")
+
+    this.circleEmpty = love.graphics.newImage("loading_screen/circle_empty.png")
+    this.circleGreen = love.graphics.newImage("loading_screen/circle_green.png")
+    this.circleRed = love.graphics.newImage("loading_screen/circle_red.png")
+
+    this.beepShort = love.sound.newSoundData("loading_screen/beep_short.ogg")
+    this.beepLong = love.sound.newSoundData("loading_screen/beep_long.ogg")
+  }
+
+  def draw() {
+    love.graphics.draw(this.backgroundImage, 0, 0)
+    love.graphics.draw(this.elapsedTime < 1 ? this.circleEmpty : this.circleGreen, 517, 537)
+    love.graphics.draw(this.elapsedTime < 2 ? this.circleEmpty : this.circleGreen, 587, 537)
+    love.graphics.draw(this.elapsedTime < 3 ? this.circleEmpty : this.circleGreen, 657, 537)
+    love.graphics.draw(this.elapsedTime < 4 ? this.circleEmpty : this.circleRed, 727, 537)
+  }
+
+  def update(dt) {
+    if (this.elapsedTime < 5.1f) {
+      this.elapsedTime += dt
+
+      if (this.elapsedTime > this.nextTick) {
+        this.nextTick += 1.0f
+        if (this.elapsedTime < 4) {
+          love.audio.play(this.beepShort)
+        } else if (this.elapsedTime < 5) {
+          love.audio.play(this.beepLong)
+        } else {
+          afterLoadScreen()
+        }
+      }
+    }
+  }
+}

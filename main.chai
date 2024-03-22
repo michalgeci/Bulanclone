@@ -1,3 +1,8 @@
+// Imports
+require("loading_screen/LoadingScreen")
+require("intro_screen/IntroScreen")
+require("map1/Map1")
+
 // Global direction
 global p1ActiveDirection = ""
 global p2ActiveDirection = ""
@@ -28,11 +33,6 @@ def afterLoadScreen() {
 }
 
 def load() {
-  // Import Used Classes
-  love.filesystem.load("loading_screen/LoadingScreen.chai")
-  love.filesystem.load("intro_screen/IntroScreen.chai")
-  love.filesystem.load("map1/Map1.chai")
-
   defaultFont = love.graphics.newFont("fonts/8bit-Regular.ttf", 32)
 
   activeObjects.push_back(IntroScreen(onStartGame))

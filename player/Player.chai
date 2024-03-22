@@ -1,3 +1,5 @@
+require("utils/CollisionHandler")
+
 class Player {
   var sprites
   var x
@@ -11,8 +13,11 @@ class Player {
   var animationTick
   var animationLenght
   var animationName
+
+  var collisionHandler
   
   def Player(index) {
+    // Assets
     this.sprites = [
       "right_run": [
         love.graphics.newImage("player/assets/right/0-0.png"),
@@ -29,6 +34,7 @@ class Player {
       ]
     ]
 
+    // Animations
     this.animations = [
       "right_static": [
         ""
@@ -46,6 +52,8 @@ class Player {
     this.animationLenght = 1
     // TODO: Dependent on this.getDirection()
     this.animationName = "right_static"
+
+    this.collisionHandler = CollisionHandler(0.0f, 0.0f, 64.0f, 64.0f)
   }
 
   def getActiveDirection() {
@@ -96,7 +104,6 @@ class Player {
     // Movement
     if (this.getActiveDirection() != "") {
       var distance = 160.0f * dt
-      print(dt)
       switch (this.getActiveDirection()) {
         case("right") {
           this.x += distance

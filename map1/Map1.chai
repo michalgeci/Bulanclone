@@ -1,3 +1,5 @@
+require("player/Player")
+
 class Map1 {
 
   var background
@@ -10,7 +12,6 @@ class Map1 {
   var player2
 
   def Map1() {
-    love.filesystem.load("player/Player.chai")
 
     this.background = love.graphics.newImage("map1/background.png")
 

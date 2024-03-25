@@ -15,6 +15,9 @@ class Player {
   var animationName
 
   var collisionHandler
+
+  var oldX
+  var oldY
   
   def Player(index) {
     // Assets
@@ -72,40 +75,12 @@ class Player {
     }
   }
 
-  def update(dt) {
-    // Select appropriate animation
-    if (this.getDirection() == "right") {
-      if (this.getActiveDirection() == "") {
-        this.animationName = "right_static"
-        this.animationTick = -1.0f
-        this.animationLenght = 1
-        this.frame = 0
-      } else {
-        this.animationName = "right_run"
-        this.animationLenght = 8
-        if (this.animationTick == -1.0f) {
-          this.frame = 0
-        }
-        this.animationTick = 0.045f
-      }
-    }
-
-    // Handle animation tick
-    if (this.animationTickCounter < this.animationTick) {
-      this.animationTickCounter += dt
-    } else {
-      this.frame += 1
-      if (this.frame >= this.animationLenght) {
-        this.frame = 0
-      }
-      this.animationTickCounter = 0.0f
-    }
-
+  def handleMovement() {
     // Update position
     var oldX = this.x
     var oldY = this.y
     if (this.getActiveDirection() != "") {
-      var distance = 160.0f * dt
+      var distance = 160.0f * love.timer.getDelta() // dt - if in process
       switch (this.getActiveDirection()) {
         case("right") {
           this.x += distance
@@ -143,7 +118,38 @@ class Player {
     }
   }
 
+  def update(dt) {
+    // Select appropriate animation
+    if (this.getDirection() == "right") {
+      if (this.getActiveDirection() == "") {
+        this.animationName = "right_static"
+        this.animationTick = -1.0f
+        this.animationLenght = 1
+        this.frame = 0
+      } else {
+        this.animationName = "right_run"
+        this.animationLenght = 8
+        if (this.animationTick == -1.0f) {
+          this.frame = 0
+        }
+        this.animationTick = 0.045f
+      }
+    }
+
+    // Handle animation tick
+    if (this.animationTickCounter < this.animationTick) {
+      this.animationTickCounter += dt
+    } else {
+      this.frame += 1
+      if (this.frame >= this.animationLenght) {
+        this.frame = 0
+      }
+      this.animationTickCounter = 0.0f
+    }
+  }
+
   def draw() {
+    this.handleMovement()
     love.graphics.draw(this.sprites[this.animationName][this.frame], this.x, this.y)
   }
 }
